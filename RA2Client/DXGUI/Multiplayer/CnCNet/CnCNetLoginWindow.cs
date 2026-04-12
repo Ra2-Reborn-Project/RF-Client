@@ -181,7 +181,7 @@ namespace Ra2Client.DXGUI.Multiplayer.CnCNet
                 case 3: 
                     //return "Availability Zone 4 Overview (United States):\n\nRegion: Los Angeles, USA\nAverage latency: 160ms (Delayed test location: China)\n\nLine: GSL+CN2GIA+9929+10099+CMIN2\nNetwork support: IPv4+IPv6\nCloud service provider: DMIT".L10N("UI:Main:RegionDescUS");
                 case 0:
-                    return "Reunion Availability Zone 5 Overview (China): \n\nPrivate".L10N("UI:Main:RegionDescPr");
+                    return "Reunion Availability Zone 5 Overview (China): \n\nPrivate".L10N("Ui:Main:RegionDescPr");
                 default: 
                     return "Please select a server region to view the region introduction.".L10N("UI:Main:RegionDescDefault");
             }
