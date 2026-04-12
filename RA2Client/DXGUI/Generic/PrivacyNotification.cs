@@ -14,7 +14,8 @@ namespace Ra2Client.DXGUI.Generic
     public class PrivacyNotification : XNAWindow
     {
         private Timer _timer;
-        private int CountSec = 10;
+        //private int CountSec = 10;
+        private int CountSec = 0;
 
         private XNALabel lblDescription;
         private XNALabel lblMoreInformation;
@@ -66,7 +67,8 @@ namespace Ra2Client.DXGUI.Generic
             lblExplanation = new XNALabel(WindowManager);
             lblExplanation.Name = nameof(lblExplanation);
             lblExplanation.ClientRectangle = new Rectangle(75, 80, 0, 0);
-            lblExplanation.Text = "重聚未来官网: www.yra2.com (温馨提示: 众口难调，如果你觉得哪里不好可以提，但请不要直接骂)\r\n\r\n" +
+            lblExplanation.Text = "来自补丁作者：本补丁是为了复活重聚的联机以及部分在线服务而生，因此可能很少有新功能，请见谅\r\n\r\n" +
+                                  "重聚未来官网: www.yra2.com (官网已失效 温馨提示: 众口难调，如果你觉得哪里不好可以提，但请不要直接骂)\r\n\r\n" +
                                   "根据相关法律法规，您有权知道我们需要收集的信息，这包含您的设备标识符以及您的设备信息。\r\n\r\n" +
                                   "此Mod完全免费，从下载到安装以及后续技术支持都不存在任何付费情况。\r\n\r\n" +
                                   "如果您喜欢这个Mod，可以到官网的赞助界面请作者喝杯奶茶。\r\n\r\n" +
