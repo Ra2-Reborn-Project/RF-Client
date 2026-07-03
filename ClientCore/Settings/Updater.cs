@@ -501,9 +501,9 @@ public static class Updater
                     {
                         Logger.Log("更新：有新版本");
                         return true;
-                    }
                 }
             }
+        }
         }
         Logger.Log("更新：无新版本");
         return false;

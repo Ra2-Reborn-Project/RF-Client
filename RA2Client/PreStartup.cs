@@ -51,7 +51,7 @@ namespace Ra2Client
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
             Application.ThreadException += (sender, args) => HandleException(sender, args.Exception);
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => HandleException(sender, (Exception)args.ExceptionObject);
-            
+
             //DirectoryInfo gameDirectory = SafePath.GetDirectory(ProgramConstants.GamePath);
             var gameDirectory = new DirectoryInfo(ProgramConstants.GamePath);
             Environment.CurrentDirectory = gameDirectory.FullName;
@@ -79,7 +79,7 @@ namespace Ra2Client
 
             Logger.Initialize(clientUserFilesDirectory.FullName, clientLogFile.Name);
             Logger.WriteLogFile = true;
-            
+
             UserINISettings.Initialize(ClientConfiguration.Instance.SettingsIniName);
 
             Updater.GameVersion = Assembly.GetAssembly(typeof(PreStartup)).GetName().Version.ToString();

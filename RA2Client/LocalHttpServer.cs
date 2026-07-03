@@ -656,7 +656,7 @@ namespace Ra2Client
         }
 
         private static async Task 写入模组(ModVo modVo, WindowManager wm)
-        {   
+        {
             var address = UserINISettings.Instance.BaseAPIAddress.Value + "/";
             try
             {
@@ -718,7 +718,7 @@ namespace Ra2Client
         }
 
         private static async Task 写入组件(ComponentVo cmpVo, WindowManager wm)
-        {   
+        {
             var address = UserINISettings.Instance.BaseAPIAddress.Value + "/";
             try
             {

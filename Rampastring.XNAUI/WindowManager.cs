@@ -822,8 +822,8 @@ public class WindowManager : DrawableGameComponent
         {
             Renderer.DrawString("Active Control: " + activeControlName, 0, new Vector2(0, 48), Color.Red, 1.0f);
 
-            if (IMEHandler != null && IMEHandler.TextCompositionEnabled)
-            {
+        if (IMEHandler != null && IMEHandler.TextCompositionEnabled)
+        {
                 Renderer.DrawString("IME Enabled", 0, new Vector2(0, 64), Color.Red, 1.0f);
             }
         }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using ClientCore;
+using DTAConfig.Entity;
 using Localization;
 using Microsoft.Xna.Framework;
 using Rampastring.Tools;
-
+using ClientCore.Entity;
 namespace Ra2Client.Domain.Multiplayer
 {
     /// <summary>
@@ -103,6 +104,69 @@ namespace Ra2Client.Domain.Multiplayer
             return new List<MultiplayerColor>(colorList);
         }
 
+
+        /// <summary>
+        /// 添加Mod自定义的颜色
+        /// </summary>
+        /// <param name="newColors"></param>
+        /// <returns></returns>
+        /// <exception cref="ClientConfigurationException"></exception>
+        public static List<MultiplayerColor> LoadColorsFormMod(String ModID,List<string> newColors = null)
+        {
+            //if (colorList != null && newColors == null)
+            //    return new List<MultiplayerColor>(colorList);
+
+            IniFile gameOptionsIni = new IniFile(SafePath.CombineFilePath(ProgramConstants.GamePath, "Mod&AI", $"Mod&AI{ModID}.ini"));
+
+            List<MultiplayerColor> mpColors = new List<MultiplayerColor>();
+
+            List<string> colorKeys = gameOptionsIni.GetSectionKeys("MPColors");
+            if (colorKeys == null)
+                throw new ClientConfigurationException($"[MPColors] not found in {ModID}.ini! \n" + gameOptionsIni.FileName);
+
+            int nIndex = 0;
+            if (newColors != null)
+            {
+                foreach (var color in newColors)
+                {
+                    string[] values = color.Split(',');
+
+                    try
+                    {
+                        MultiplayerColor mpColor = MultiplayerColor.CreateFromStringArray(nIndex, ""/*key.L10N("UI:Color:" + key)*/, values);
+                        mpColors.Add(mpColor);
+                        nIndex++;
+                    }
+                    catch
+                    {
+                        throw new ClientConfigurationException("Invalid MPColor specified in Mod.ini: " + color);
+                    }
+                }
+            }
+            else
+                foreach (string key in colorKeys)
+                {
+                    string[] values = gameOptionsIni.GetStringValue("MPColors", key, "255,255,255").Split(',');
+
+                    try
+                    {
+                        MultiplayerColor mpColor = MultiplayerColor.CreateFromStringArray(nIndex, key/*key.L10N("UI:Color:" + key)*/, values);
+                        mpColors.Add(mpColor);
+                        nIndex++;
+                    }
+                    catch
+                    {
+                        throw new ClientConfigurationException("Invalid MPColor specified in GameOptions.ini: " + key);
+                    }
+                }
+
+            var randomColorSection = gameOptionsIni.GetSection("MPColorsRandomLabel");
+            if (randomColorSection != null)
+                randomColorLabel = randomColorSection.GetStringValue("Text", null);
+
+            colorList = mpColors;
+            return new List<MultiplayerColor>(colorList);
+        }
         public static string GetRandomColorLabel()
             => string.IsNullOrEmpty(randomColorLabel) ? RandomColorDefaultLabel : randomColorLabel;
     }

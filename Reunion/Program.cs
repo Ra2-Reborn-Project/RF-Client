@@ -77,7 +77,7 @@ namespace Reunion
                 if (!File.Exists(ReadmeFile) || !File.Exists(FreeFile) || !File.Exists(LicenseFile) || !File.Exists(AntiCheatFile))
                 {
                     //MessageBox.Show("发现未知错误，请联系重聚未来制作组", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    MessageBox.Show("游戏校验文件完整性失败，有文件不存在，补丁已强制忽略这些文件", "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                   MessageBox.Show("游戏校验文件完整性失败，有文件不存在，补丁已强制忽略这些文件", "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return true;
                 }
 
@@ -200,6 +200,7 @@ namespace Reunion
                         default:
                             url = "https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0";
                             message = "您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: Unknown\n运行时版本: 6.0.36\n\n应用程序貌似与您的系统不兼容, 请尝试更换系统";
+                            url = "https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0";
                             break;
                     }
 

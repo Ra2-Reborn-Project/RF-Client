@@ -184,7 +184,7 @@ namespace Ra2Client.Domain.Multiplayer.CnCNet
 
             List<CnCNetTunnel> returnValue = new List<CnCNetTunnel>();
 
-            Logger.Log("Fetching tunnel server info."); 
+            Logger.Log("Fetching tunnel server info.");
 
             try
             {

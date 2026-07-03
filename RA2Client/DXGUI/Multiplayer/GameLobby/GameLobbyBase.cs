@@ -79,7 +79,7 @@ namespace Ra2Client.DXGUI.Multiplayer.GameLobby
         protected XNAPanel PlayerOptionsPanel;
 
         protected List<MultiplayerColor> MPColors;
-
+        protected List<MultiplayerColor> OMPColors;
         public List<GameLobbyCheckBox> CheckBoxes = new List<GameLobbyCheckBox>();
         public List<GameLobbyDropDown> DropDowns = new List<GameLobbyDropDown>();
 
@@ -224,7 +224,7 @@ namespace Ra2Client.DXGUI.Multiplayer.GameLobby
             };
 
             MPColors = MultiplayerColor.LoadColors();
-
+            OMPColors = MPColors;
             GameOptionsIni = new IniFile(SafePath.CombineFilePath(ProgramConstants.GetBaseResourcePath(), "GameOptions.ini"));
 
             base.Initialize();
@@ -867,7 +867,7 @@ namespace Ra2Client.DXGUI.Multiplayer.GameLobby
 
             string[] sides = mod.Countries.Split(',');
             var RandomSides = mod.RandomSides.Split(',');
-
+       
             SideCount = sides.Length;
             RandomSelectorCount = RandomSides.Length + 1;
             MapPreviewBox.RandomSelectorCount = RandomSelectorCount;
@@ -899,6 +899,57 @@ namespace Ra2Client.DXGUI.Multiplayer.GameLobby
                 }
                 ddSide.AddItem("spectator".L10N("UI:Main:spectator"), LoadTextureOrNull("spectatoricon.png"));
             }
+
+            if (mod.AllowMPColors == true)
+            {
+                List<MultiplayerColor> ModMPColors = MultiplayerColor.LoadColorsFormMod(mod.ID);
+                MPColors = ModMPColors;
+                foreach (var ddPlayerColor in ddPlayerColors)
+                {
+                    ddPlayerColor.Items.Clear();
+                    ddPlayerColor.AddItem(MultiplayerColor.GetRandomColorLabel(), AssetLoader.GetColorFromString(randomColor));
+                    foreach (var mpColor in MPColors)
+                    {
+                        var colorName = mpColor.Name.StartsWith("$") ? mpColor.Name.TrimStart('$') : mpColor.Name;
+                        var item = new XNADropDownItem()
+                        {
+                            Text = colorName,
+                            Texture = mpColor.Name.StartsWith("$") ? AssetLoader.CreateTexture(mpColor.XnaColor, ddPlayerColor.ItemHeight - 2, ddPlayerColor.ItemHeight - 2) : null,
+                            TextColor = mpColor.XnaColor
+                        };
+                        ddPlayerColor.AddItem(item);
+                    }
+
+                    // ddPlayerColor.AllowDropDown = false;
+                    ddPlayerColor.Tag = false;
+                    ddPlayerColor.SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                MPColors = OMPColors;
+                foreach (var ddPlayerColor in ddPlayerColors)
+                {
+                    ddPlayerColor.Items.Clear();
+                    ddPlayerColor.AddItem(MultiplayerColor.GetRandomColorLabel(), AssetLoader.GetColorFromString(randomColor));
+                    foreach (var mpColor in MPColors)
+                    {
+                        var colorName = mpColor.Name.StartsWith("$") ? mpColor.Name.TrimStart('$') : mpColor.Name;
+                        var item = new XNADropDownItem()
+                        {
+                            Text = colorName,
+                            Texture = mpColor.Name.StartsWith("$") ? AssetLoader.CreateTexture(mpColor.XnaColor, ddPlayerColor.ItemHeight - 2, ddPlayerColor.ItemHeight - 2) : null,
+                            TextColor = mpColor.XnaColor
+                        };
+                        ddPlayerColor.AddItem(item);
+                    }
+
+                    // ddPlayerColor.AllowDropDown = false;
+                    ddPlayerColor.Tag = false;
+                    ddPlayerColor.SelectedIndex = 0;
+                }
+            }
+            ;
 
             MapPreviewBox.mpColors = MPColors;
             MapPreviewBox.sides = sides;

@@ -17,9 +17,9 @@ public class Mod : InfoBaseClass
              SetValue("Mod", ID, ID);
         iniFile.AddSection(ID).
             SetValue("Description", Description).
-            SetValue("Name",Name).
+            SetValue("Name", Name).
             SetValue("FilePath", FilePath).
-            SetValue("Version", Version). 
+            SetValue("Version", Version).
             SetValue("MuVisible", MuVisible).
             SetValue("CpVisible", CpVisible).
             SetValue("Compatible", Compatible).
@@ -30,16 +30,16 @@ public class Mod : InfoBaseClass
             SetValue("SettingsFile", SettingsFile).
             SetValue("RandomSides", RandomSides);
 
-        for (int i = 0; i < RandomSidesIndexs.Count;i++)
+        for (int i = 0; i < RandomSidesIndexs.Count; i++)
         {
-            iniFile.SetValue(ID, $"RandomSidesIndex{i+1}", RandomSidesIndexs[i]);
+            iniFile.SetValue(ID, $"RandomSidesIndex{i + 1}", RandomSidesIndexs[i]);
         }
         if (Colors != null)
             iniFile.SetValue(ID, "Colors", Colors);
 
-            //if (Countries.Length < 9) iniFile.SetValue(ID, "RandomSides", string.Empty);
+        //if (Countries.Length < 9) iniFile.SetValue(ID, "RandomSides", string.Empty);
 
-            iniFile.WriteIniFile();
+        iniFile.WriteIniFile();
     }
 
     /// <summary>
@@ -61,6 +61,7 @@ public class Mod : InfoBaseClass
             { "国家列表", Countries },
             { "随机国家列表", RandomSides },
             { "注册于", FileName },
+            { "可自定义的颜色", AllowMPColors.ToString()},
         };
 
         return properties;
@@ -103,7 +104,7 @@ public class Mod : InfoBaseClass
                 }
 
                 mod.SuperWeaponBuildings = iniFile.GetValue(modID, "SuperWeaponBuildings", string.Empty);
-                
+
 
                 if (iniFile.KeyExists(modID, "Sides"))
                 {
@@ -122,7 +123,7 @@ public class Mod : InfoBaseClass
                     }
                 }
 
-              
+
                 if (iniFile.KeyExists(modID, "Compatible"))
                 {
                     mod.Compatible = iniFile.GetValue(modID, "Compatible", string.Empty);
@@ -146,7 +147,7 @@ public class Mod : InfoBaseClass
                 mod.SettingsFile = iniFile.GetValue(modID, "SettingsFile", "RA2MD.ini");
                 mod.Ra2ModePath = iniFile.GetValue(modID, "Ra2ModePath", string.Empty);
                 mod.Colors = iniFile.GetValue<string>(modID, "Colors", null);
-
+                mod.AllowMPColors = iniFile.GetValue(modID, "AllowColors", false);
                 HashSet<string> modSet = [];
 
                 //if (mod.md == string.Empty)
@@ -179,6 +180,10 @@ public class Mod : InfoBaseClass
     /// </summary>
     /// 
     public string Colors { get; set; }
+    /// <summary>
+    /// 允许MOD存在自定义颜色
+    /// </summary>
+    public bool AllowMPColors { get; set; } = false;
 
     public string Ra2ModePath { get; set; }
 
@@ -236,6 +241,10 @@ public class Mod : InfoBaseClass
     /// 键,值：值Mod能玩的键Mod都能玩
     /// </summary>
     public static Dictionary<string, string> CompatibleDictionary = [];
+
+
+
+
 
     /// <summary>
     /// 重写ToString方法

@@ -20,10 +20,10 @@ public class NetWorkINISettings
     //private static string remoteFileUrl = "";                     // 远程设置路径
     private const string localFilePath = "Resources\\Settings";     // 本地设置路径
     private const string secUpdater = "Updater";                    // 更新段+组件段
-    
+
     //public const string Address = "https://api.yra2.com/";
     //public string Address = UserINISettings.Instance.BaseAPIAddress.Value;
-    //public const string Address = "http://localhost:9088/";
+ //public const string Address = "http://localhost:9088/";
     //public const string Address = "https://api.yra2.com/";
     //public const string Address = "https://ra2yr.dreamcloud.top:9999/";
 
@@ -303,7 +303,7 @@ public class NetWorkINISettings
             response = await client.GetAsync(fullUrl).ConfigureAwait(false);
 
             Logger.Log($"API响应: {(int)response.StatusCode} {response.ReasonPhrase}");
-
+        
             // 读取响应内容
             T responseData = default;
             if (response.IsSuccessStatusCode)
