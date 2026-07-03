@@ -28,8 +28,8 @@ public class Mod : InfoBaseClass
             SetValue("Sides", Countries).
             SetValue("Author", Author).
             SetValue("SettingsFile", SettingsFile).
-            SetValue("RandomSides", RandomSides);
-
+            SetValue("RandomSides", RandomSides).
+            SetValue("AllowColors", AllowMPColors);
         for (int i = 0; i < RandomSidesIndexs.Count; i++)
         {
             iniFile.SetValue(ID, $"RandomSidesIndex{i + 1}", RandomSidesIndexs[i]);
@@ -271,7 +271,8 @@ public class Mod : InfoBaseClass
                $"随机国家索引：{string.Join(",", RandomSidesIndexs)}\n" +
                $"兼容的任务mod：{Compatible}\n" +
                $"注册于哪个文件：{FileName}\n" +
-               $"可以额外选择的颜色数：{Colors}";
+               $"可以额外选择的颜色数：{Colors}" +
+               $"允许自定义的颜色：{AllowMPColors}";
     }
 
     /// <summary>
@@ -312,7 +313,8 @@ public class Mod : InfoBaseClass
         "# INI = 注入的INI。默认 无 \r\n" +
         "# Countries = 国家列表。默认 美国,韩国,法国,德国,英国,利比亚,伊拉克,古巴,苏联,尤里 \r\n" +
         "# RandomSides = 随机国家。默认 随机盟军,随机苏军 \r\n" +
-        "# RandomSidesIndex* = 随机国家索引。默认 两组 0,1,2,3,4 5,6,7,8"
+        "# RandomSidesIndex* = 随机国家索引。默认 两组 0,1,2,3,4 5,6,7,8\r\n"+
+        "# AllowColors = 允许自定义的颜色，默认false，按照GameOptions.ini里面的写法写在本文件的[MPColors]下面"
         ;
 
 }
