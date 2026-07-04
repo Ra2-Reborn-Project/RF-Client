@@ -8,11 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Reunion</RootNamespace>
     <AssemblyName>Reunion</AssemblyName>
-<<<<<<< HEAD
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-=======
     <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
->>>>>>> 添加项目文件。
     <LangVersion>8.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
