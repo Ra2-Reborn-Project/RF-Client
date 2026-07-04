@@ -160,10 +160,11 @@ namespace Ra2Client.DXGUI.Multiplayer.CnCNet
 
         private static readonly string[] SERVER_REGIONS =
         [
-            "Reunion Availability Zone 1",
-            "Reunion Availability Zone 2",
-            "Reunion Availability Zone 3",
-            "Reunion Availability Zone 4",
+            //"Reunion Availability Zone 1",
+            //"Reunion Availability Zone 2",
+            //"Reunion Availability Zone 3",
+            //"Reunion Availability Zone 4",
+            "Reunion Availability Zone 5"
         ];
 
         private void GameList_ClientRectangleUpdated(object sender, EventArgs e)
@@ -320,10 +321,11 @@ namespace Ra2Client.DXGUI.Multiplayer.CnCNet
                 lbPlayerList.Right - 117,
                 ddCurrentChannel.Y, 180, 21);
 
-            ddServerRegion.AddItem("Reunion Availability Zone 1".L10N("UI:Main:AvailabilityZone1"));
-            ddServerRegion.AddItem("Reunion Availability Zone 2".L10N("UI:Main:AvailabilityZone2"));
-            ddServerRegion.AddItem("Reunion Availability Zone 3".L10N("UI:Main:AvailabilityZone3"));
-            ddServerRegion.AddItem("Reunion Availability Zone 4".L10N("UI:Main:AvailabilityZone4"));
+            //ddServerRegion.AddItem("Reunion Availability Zone 1".L10N("UI:Main:AvailabilityZone1"));
+            //ddServerRegion.AddItem("Reunion Availability Zone 2".L10N("UI:Main:AvailabilityZone2"));
+            //ddServerRegion.AddItem("Reunion Availability Zone 3".L10N("UI:Main:AvailabilityZone3"));
+            //ddServerRegion.AddItem("Reunion Availability Zone 4".L10N("UI:Main:AvailabilityZone4"));
+            ddServerRegion.AddItem("Reunion Availability Zone 5".L10N("UI:Main:AvailabilityZone5"));
 
             int defaultRegionIndex = Array.IndexOf(SERVER_REGIONS, Connection.SelectedRegion);
             if (defaultRegionIndex == -1)

@@ -7,22 +7,16 @@ namespace Ra2Client.Domain
     {
         //public const string CNCNET_TUNNEL_LIST_URL = "http://cncnet.org/master-list";
 
-        public static readonly Dictionary<string, string> TunnelServerUrls = new Dictionary<string, string>
-        {
-            // { "仅重聚官方自建", "http://tunnel.yra2.com/my/" },
-            { "仅中国内地", "http://tunnel.yra2.com/cn/" },
-            { "仅中国内地+港澳台", "http://tunnel.yra2.com/zh/" },
-            { "原服务器列表", "http://tunnel.yra2.com/list/" }
-        };
+        public static Dictionary<string, string> TunnelServerUrls { get; private set; }
 
-        public static string CurrentTunnelServerUrl = TunnelServerUrls["仅中国内地+港澳台"];
+        public static string CurrentTunnelServerUrl { get; set; } = string.Empty;
 
         public static string GAME_NAME_LONG = "Red Alert 2 Reunion Client";
         public static string GAME_NAME_SHORT = "Reunion";
 
         //public static string CREDITS_URL = Path.Combine(ProgramConstants.游戏目录, "Resources\\ThanksList");
 
-        public static string SUPPORT_URL_SHORT = "www.yra2.com";
+        public static string SUPPORT_URL_SHORT { get; set; }
 
         public static bool USE_ISOMETRIC_CELLS = true;
         public static int TDRA_WAYPOINT_COEFFICIENT = 128;
@@ -41,6 +35,17 @@ namespace Ra2Client.Domain
             GAME_NAME_LONG = clientConfiguration.LongGameName;
 
             SUPPORT_URL_SHORT = clientConfiguration.ShortSupportURL;
+
+            var baseUrl = UserINISettings.Instance.BaseAPIAddress.Value;
+            TunnelServerUrls = new Dictionary<string, string>
+            {
+                { "仅重聚官方自建", $"{baseUrl}/tunnels/official" },
+                { "仅中国内地", $"{baseUrl}/tunnels/cn" },
+                { "仅中国内地+港澳台", $"{baseUrl}/tunnels/zh" },
+                { "原服务器列表", $"{baseUrl}/tunnels/all" }
+            };
+
+            CurrentTunnelServerUrl = TunnelServerUrls["仅重聚官方自建"];
 
             //CREDITS_URL = clientConfiguration.CreditsURL;
 

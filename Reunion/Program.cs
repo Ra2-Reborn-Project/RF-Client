@@ -76,20 +76,22 @@ namespace Reunion
             {
                 if (!File.Exists(ReadmeFile) || !File.Exists(FreeFile) || !File.Exists(LicenseFile) || !File.Exists(AntiCheatFile))
                 {
-                    MessageBox.Show("发现未知错误，请联系重聚未来制作组", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    //MessageBox.Show("发现未知错误，请联系重聚未来制作组", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("游戏校验文件完整性失败，有文件不存在，补丁已强制忽略这些文件", "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return true;
                 }
 
                 if (!ComputeFileSHA256(ReadmeFile).Equals(ReadmeFileHash, StringComparison.OrdinalIgnoreCase) || !ComputeFileMD5(FreeFile).Equals(FreeFileHash, StringComparison.OrdinalIgnoreCase) || !ComputeFileSHA1(LicenseFile).Equals(LicenseFileHash, StringComparison.OrdinalIgnoreCase) || !ComputeFileSHA512(AntiCheatFile).Equals(AntiCheatFileHash, StringComparison.OrdinalIgnoreCase))
                 {
-                    MessageBox.Show("发现未知错误，请联系重聚未来制作组", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    //MessageBox.Show("发现未知错误，请联系重聚未来制作组", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("游戏校验文件完整性失败，有文件校验失败，补丁已强制忽略这些文件", "错误", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return true;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"文件校验出错: {ex.Message}", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                MessageBox.Show($"文件校验出错: {ex.Message}，已跳过校验", "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
             }
             return true;
         }
@@ -175,20 +177,29 @@ namespace Reunion
                     switch (arch)
                     {
                         case "x86":
-                            message = "您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: x86\n运行时版本: 6.0.36\n\n如果不能正常跳转到下载地址, 请使用此地址手动下载x86运行时: https://url.yra2.com/net61\n\n您现在想下载吗? (点击确定即可自动下载)";
-                            url = $"https://url.yra2.com/net61";
+                            
+                            //url = $"https://url.yra2.com/net61";
+                            url =
+                                "https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x86-installer";
+                            message = $"您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: x86\n运行时版本: 6.0.36\n\n如果不能正常跳转到下载地址, 请使用此地址手动下载x86运行时: {url}\n\n您现在想下载吗? (点击确定即可自动下载)";
                             break;
                         case "x64":
-                            message = "您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: x64\n运行时版本: 6.0.36\n\n如果不能正常跳转到下载地址, 请使用此地址手动下载x64运行时: https://url.yra2.com/net60\n\n您现在想下载吗? (点击确定即可自动下载)";
-                            url = $"https://url.yra2.com/net60";
+                            
+                            //url = $"https://url.yra2.com/net60";
+                            url =
+                                "https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer";
+                            message = $"您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: x64\n运行时版本: 6.0.36\n\n如果不能正常跳转到下载地址, 请使用此地址手动下载x64运行时: {url}\n\n您现在想下载吗? (点击确定即可自动下载)";
                             break;
                         case "arm64":
-                            message = "您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: Arm64\n运行时版本: 6.0.36\n\n如果不能正常跳转到下载地址, 请使用此地址手动下载Arm64运行时: https://url.yra2.com/net62\n\n您现在想下载吗? (点击确定即可自动下载)";
-                            url = $"https://url.yra2.com/net62";
+                            
+                            //url = $"https://url.yra2.com/net62";
+                            url =
+                                "https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-arm64-installer";
+                            message = $"您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: Arm64\n运行时版本: 6.0.36\n\n如果不能正常跳转到下载地址, 请使用此地址手动下载Arm64运行时: {url}\n\n您现在想下载吗? (点击确定即可自动下载)";
                             break;
                         default:
-                            message = "您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: Unknown\n运行时版本: 6.0.36\n\n应用程序貌似与您的系统不兼容, 请尝试更换系统";
                             url = "https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0";
+                            message = "您必须安装 .NET 桌面运行时来运行此应用程序\n\n架构: Unknown\n运行时版本: 6.0.36\n\n应用程序貌似与您的系统不兼容, 请尝试更换系统";
                             break;
                     }
 

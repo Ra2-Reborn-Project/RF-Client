@@ -20,13 +20,12 @@ public class NetWorkINISettings
     //private static string remoteFileUrl = "";                     // 远程设置路径
     private const string localFilePath = "Resources\\Settings";     // 本地设置路径
     private const string secUpdater = "Updater";                    // 更新段+组件段
-
-#if DEBUG
-    public const string Address = "https://api.yra2.com/";
- //public const string Address = "http://localhost:9088/";
-#else
-    public const string Address = "https://api.yra2.com/";
-#endif
+    
+    //public const string Address = "https://api.yra2.com/";
+    //public string Address = UserINISettings.Instance.BaseAPIAddress.Value;
+    //public const string Address = "http://localhost:9088/";
+    //public const string Address = "https://api.yra2.com/";
+    //public const string Address = "https://ra2yr.dreamcloud.top:9999/";
 
     public static event EventHandler DownloadCompleted;
 
@@ -74,6 +73,14 @@ public class NetWorkINISettings
 
     public static void Initialize()
     {
+        var address = UserINISettings.Instance.BaseAPIAddress.Value + "/";
+        Logger.Log("更新：开始初始化网络设置");
+        Logger.Log($"更新：API服务器地址: {address}");
+
+        // 检查Token状态
+        var token = UserINISettings.Instance.Token.Value;
+        Logger.Log($"更新：当前Token状态: {(string.IsNullOrEmpty(token) ? "空" : $"已设置(长度:{token.Length})")}");
+
         //var remoteServerUrl = (await Get<string>("dict/GetValue?section=dln&key=main_address")).Item1 ?? "https://autopatch1-zh-tcdn.yra2.com/Client/ServerList";
 
         //if (!DownloadSettingFile(remoteServerUrl, locServerPath))
@@ -100,16 +107,20 @@ public class NetWorkINISettings
         //    }
         //}
 
+        Logger.Log("更新：请求更新服务器列表 API");
         var uss = Get<List<UpdaterServer>>("updaterServer/getAllUpdaterServer").Result.Item1;
 
         //如果远程获取文件失败则读取本地配置
         if (uss == null)
         {
+            Logger.Log("更新：远程获取文件失败，尝试读取本地配置文件");
             var iniFile = new IniFile(SafePath.CombineFilePath(ProgramConstants.GamePath, localFilePath));
             _instance = new NetWorkINISettings(iniFile);
+            Logger.Log($"更新：从本地配置加载了 {_instance.UpdaterServers.Count} 个更新服务器");
         }
         else
         {
+            Logger.Log($"更新：成功从API获取了 {uss.Count} 个更新服务器");
             _instance = new NetWorkINISettings(uss);
             _ = Task.Run(() =>
             {
@@ -117,6 +128,7 @@ public class NetWorkINISettings
 
                 if (uss != null && uss.Count > 0)
                 {
+                    Logger.Log("更新：保存服务器列表到本地配置文件");
                     // 构建 Servers 字符串，例如：Server0,Server1,...
                     var serverNames = new List<string>();
                     for (int i = 0; i < uss.Count; i++)
@@ -187,7 +199,8 @@ public class NetWorkINISettings
         HttpResponseMessage response;
         try
         {
-            response = await client.PostAsync($"{Address}{url}", new StringContent(jsonContent, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            var address = UserINISettings.Instance.BaseAPIAddress.Value + "/";
+            response = await client.PostAsync($"{address}{url}", new StringContent(jsonContent, Encoding.UTF8, "application/json")).ConfigureAwait(false);
         
 
         // 读取响应内容
@@ -235,8 +248,9 @@ public class NetWorkINISettings
         try
         {
 
+            var address = UserINISettings.Instance.BaseAPIAddress.Value + "/";
             // 发送 POST 请求并传递 formData
-            response = await client.PostAsync($"{Address}{url}", formData).ConfigureAwait(false);
+            response = await client.PostAsync($"{address}{url}", formData).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
@@ -273,6 +287,8 @@ public class NetWorkINISettings
 
     public static async Task<(T,string)> Get<T>(string url,int timeOut = 30)
     {
+        var address = UserINISettings.Instance.BaseAPIAddress.Value + "/";
+        var fullUrl = $"{address}{url}";
         try
         {
             using var client = new HttpClient();
@@ -281,14 +297,19 @@ public class NetWorkINISettings
             // 发送 GET 请求并获取响应
             HttpResponseMessage response;
 
+            
+            Logger.Log($"API请求: GET {fullUrl}");
             client.Timeout = new TimeSpan(timeOut * TimeSpan.TicksPerSecond);
-            response = await client.GetAsync($"{Address}{url}").ConfigureAwait(false);
-        
+            response = await client.GetAsync(fullUrl).ConfigureAwait(false);
+
+            Logger.Log($"API响应: {(int)response.StatusCode} {response.ReasonPhrase}");
+
             // 读取响应内容
             T responseData = default;
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                Logger.Log($"API内容: {responseContent}");
                 var resResult = JsonSerializer.Deserialize<ResResult<T>>(responseContent);
                 responseData = resResult.data;
                 if (responseData == null)
@@ -305,6 +326,7 @@ public class NetWorkINISettings
         catch (Exception ex)
         {
             // 处理请求异常
+            Logger.Log($"API请求异常: {fullUrl} - {ex.Message}");
             Console.WriteLine($"请求失败：{ex.Message}");
             return default;
         }
@@ -321,7 +343,8 @@ public class NetWorkINISettings
 
         try
         {
-            var fullUrl = new Uri(new Uri(Address.TrimEnd('/') + "/"), url.TrimStart('/'));
+            var address = UserINISettings.Instance.BaseAPIAddress.Value + "/";
+            var fullUrl = new Uri(new Uri(address.TrimEnd('/') + "/"), url.TrimStart('/'));
             Console.WriteLine($"下载地址: {fullUrl}");
 
             var response = await client.GetAsync(fullUrl).ConfigureAwait(false);

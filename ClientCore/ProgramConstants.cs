@@ -1,3 +1,4 @@
+using ClientCore.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,9 +27,10 @@ namespace ClientCore
 
         public static readonly List<int> VersionValley = [22000, 22621, 22631, 26100, 26120, 26200, 26220, 28000];
 
-        
 
-        public static string CUR_SERVER_URL = "https://cn-east-ngb.update.yra2.com";
+
+        //public static string CUR_SERVER_URL = "https://cn-east-ngb.update.yra2.com";
+        public static string CUR_SERVER_URL => UserINISettings.Instance.BaseAPIAddress.Value;
 
         public static bool SkipLogo = false;
 
